@@ -40,6 +40,20 @@ public class Particle {
         states.add(new State(x,y,vx,vy));
     }
 
+    public void move(double size) {
+        State lastState = states.get(states.size()-1);
+        final double auxX = (lastState.x + (Math.cos(lastState.speedAngle) * lastState.speedModule)) % size;
+        final double auxY = (lastState.y + (Math.sin(lastState.speedAngle) * lastState.speedModule)) % size;
+        double x = auxX < 0 ? auxX + size : auxX;
+        double y = auxY < 0 ? auxY + size : auxY;
+
+        states.add(new State(x,y,lastState));
+    }
+
+    public State getLastState(){
+       return states.get(states.size()-1);
+    }
+
     public Long getId() {
         return id;
     }
@@ -61,6 +75,15 @@ public class Particle {
             this.vy = vy;
             this.speedModule = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
             this.speedAngle = Math.atan2(vy,vx);
+        }
+
+        public State(Double x, Double y, State previous) {
+            this.x = x;
+            this.y = y;
+            this.vx = previous.vx;
+            this.vy = previous.vy;
+            this.speedModule = previous.speedModule;
+            this.speedAngle = previous.speedAngle;
         }
 
         public Double getX() {

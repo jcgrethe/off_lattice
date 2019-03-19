@@ -1,39 +1,12 @@
 package ar.edu.itba.ss;
 import javafx.util.Pair;
+import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class NeighborDetection {
-    // Program Arguments: "./NeighborDetection/resources/sample_input_static.txt" "./NeighborDetection/resources/sample_input_dinamic.txt"
-    public static void main(String[] args) throws IOException {
-        Input input;
-        Grid grid;
-        if(args.length > 0 && args[0] != null && args[1] != null){
-            input = new Input(args[0], args[1], true, Long.valueOf(1541));
-            //TODO: Validate id as valid long
-        }else{
-            input = new Input();
-        }
-        
-        grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
-        grid.setParticles(input.getParticles());
-        long startTime = System.currentTimeMillis();
-        Map<Particle, List<Particle>> result = getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition());
-        long endTime = System.currentTimeMillis();
-//        Output.printGrid(grid);
-        //Output.printParticlesInfo(input.getParticles(), 0);
-        //Output.printResult(result);
-        //Output.generateOutput(result);
-        if(input.getSelectedParticle()!=null)
-            Output.generatePositionOutput(result,input.getSelectedParticle());
-        else
-            Output.generatePositionOutput(input.getParticles());
-
-        long duration = (endTime - startTime);
-        Output.printExecutionData(duration, input);
-    }
 
     /**
      * Returns a map with the neighbors for each particle using the "Cell Index Method".
@@ -44,7 +17,7 @@ public class NeighborDetection {
      * @param contornCondition      True if the contorn condition is on.
      * @return  A Map with a {@link List} of {@link Particle}s for each Particle.
      */
-    private static Map<Particle, List<Particle>> getNeighbors(Grid grid, HashSet<Pair<Integer, Integer>> usedCells, Double interactionRadio, Boolean contornCondition){
+    protected static Map<Particle, List<Particle>> getNeighbors(Grid grid, HashSet<Pair<Integer, Integer>> usedCells, Double interactionRadio, Boolean contornCondition){
         Map<Particle, List<Particle>> result = new HashMap<>();
         // Foreach cell with particles
         usedCells.forEach(pair -> {
@@ -137,13 +110,13 @@ public class NeighborDetection {
     }
 
     private static Double getDistance(Particle p1, Particle p2, boolean contorn, int size){
-        double y = Math.abs(p2.getStates().get(0).getY() - p1.getStates().get(0).getY());
-        double x = Math.abs(p2.getStates().get(0).getX() - p1.getStates().get(0).getX());
+        double y = Math.abs(p2.getLastState().getY() - p1.getLastState().getY());
+        double x = Math.abs(p2.getLastState().getX() - p1.getLastState().getX());
         double h = Math.hypot(y, x); 
         if (contorn){
-            double xc = Math.abs(p1.getStates().get(0).getX() - p2.getStates().get(0).getX());
+            double xc = Math.abs(p1.getLastState().getX() - p2.getLastState().getX());
             xc = Math.min(xc, size - xc);
-            double yc = (double)size - Math.abs(p1.getStates().get(0).getY() - p2.getStates().get(0).getY());
+            double yc = (double)size - Math.abs(p1.getLastState().getY() - p2.getLastState().getY());
             yc = Math.min(yc, size - yc);
             return Math.min(h, Math.hypot(xc, yc));
         }

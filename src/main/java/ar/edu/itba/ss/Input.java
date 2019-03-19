@@ -76,6 +76,11 @@ public class Input {
             staticFileReader = new BufferedReader(new FileReader(staticFileName));
             dinamicFileReader = new BufferedReader(new FileReader(dinamicFileName));
             this.particlesQuantity = Long.valueOf(staticFileReader.readLine());
+            if (particleId ==null){
+                Random r = new Random();
+                particleId = r.nextLong() % particlesQuantity;
+            }
+            particleId= Long.valueOf(10);
             this.cellSideQuantity = Integer.valueOf(staticFileReader.readLine());
             this.particles = new ArrayList<>();
             dinamicFileReader.readLine();  //Discard first time notation
