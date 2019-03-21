@@ -26,6 +26,7 @@ public class OffLattice {
             Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
             grid.setParticles(input.getParticles(), time);
             results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
+            updateParticles(input, results.get(results.size() - 1));
         }
 
         if(input.getSelectedParticle()!=null)
@@ -33,6 +34,14 @@ public class OffLattice {
         else
             Output.generatePositionOutput(input.getParticles());
 
+    }
+
+    private static void updateParticles(Input input, Map<Particle, List<Particle>> neighbors) {
+
+        //TODO: get noise from input
+        input.getParticles().stream().parallel().forEach(particle -> {
+            particle.move(input.getSystemSideLength(),0,neighbors.get(particle));
+        });
     }
 
     private static CommandLine getOptions(String[] args){

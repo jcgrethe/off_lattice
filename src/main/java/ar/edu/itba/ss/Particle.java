@@ -2,6 +2,9 @@ package ar.edu.itba.ss;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public class Particle {
 
@@ -12,16 +15,11 @@ public class Particle {
     private String property;
     private List<State> states = new ArrayList<>();
 
-    public Particle(Double radio, String property, Double x, Double y, Double vx, Double vy) {
+    public Particle(Double radio, String property, Double x, Double y, Double speedModule, Double speedAngle) {
         this.id = ID_ACUM++;
         this.radio = radio;
         this.property = property;
-        states.add(new State(x, y, vx, vy));
-    }
-
-    public Particle(Double radio, String property) {
-        this.radio = radio;
-        this.property = property;
+        states.add(new State(x, y, speedModule, speedAngle));
     }
 
     public Double getRadio() {
@@ -36,18 +34,31 @@ public class Particle {
         return states;
     }
 
-    public void addState(Double x, Double y, Double vx, Double vy){
-        states.add(new State(x,y,vx,vy));
-    }
-
-    public void move(double size) {
-        State lastState = states.get(states.size()-1);
-        final double auxX = (lastState.x + (Math.cos(lastState.speedAngle) * lastState.speedModule)) % size;
-        final double auxY = (lastState.y + (Math.sin(lastState.speedAngle) * lastState.speedModule)) % size;
+    public void move(double size, double noise, List<Particle> neighbors) {
+        State lastState = getLastState();
+        final double auxX = (lastState.x + lastState.vx ) % size;
+        final double auxY = (lastState.y + lastState.vy) % size;
         double x = auxX < 0 ? auxX + size : auxX;
         double y = auxY < 0 ? auxY + size : auxY;
 
-        states.add(new State(x,y,lastState));
+        double angle = newAngle(noise, -noise, neighbors);
+        states.add(new State(x,y,lastState.speedModule,angle));
+    }
+
+    private double newAngle(double maxNoise, double minNoise, List <Particle> neighbors ) {
+        double randomNoise = minNoise + (new Random().nextDouble() * (maxNoise - minNoise));
+        return average(neighbors) + randomNoise;
+    }
+
+    private double average(List<Particle> neighbors){
+        return Math.atan2(
+                DoubleStream.concat(DoubleStream.of(Math.sin(this.getLastState().speedAngle)), neighbors.stream()
+                        .mapToDouble(particle -> particle.getLastState().speedAngle).map(Math::sin))
+                        .average().getAsDouble(),
+                DoubleStream.concat(DoubleStream.of(Math.cos(this.getLastState().speedAngle)), neighbors.stream()
+                        .mapToDouble(particle -> particle.getLastState().speedAngle).map(Math::cos))
+                        .average().getAsDouble()
+        );
     }
 
     public State getLastState(){
@@ -62,28 +73,19 @@ public class Particle {
         private final Double x;
         private final Double y;
 
-        private final Double vx;
-        private final Double vy;
-
+        private final double vx;
+        private final double vy;
         private final Double speedModule;
-        private final Double speedAngle;
+        private Double speedAngle;
 
-        public State(Double x, Double y, Double vx, Double vy) {
+
+        public State(Double x, Double y, double speedModule, double speedAngle) {
             this.x = x;
             this.y = y;
-            this.vx = vx;
-            this.vy = vy;
-            this.speedModule = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
-            this.speedAngle = Math.atan2(vy,vx);
-        }
-
-        public State(Double x, Double y, State previous) {
-            this.x = x;
-            this.y = y;
-            this.vx = previous.vx;
-            this.vy = previous.vy;
-            this.speedModule = previous.speedModule;
-            this.speedAngle = previous.speedAngle;
+            this.speedAngle = speedAngle;
+            this.speedModule = speedModule;
+            this.vx = Math.cos(speedAngle) * speedModule;
+            this.vy = Math.sin(speedAngle) * speedModule;
         }
 
         public Double getX() {
@@ -94,20 +96,20 @@ public class Particle {
             return y;
         }
 
-        public Double getVx() {
-            return vx;
-        }
-
-        public Double getVy() {
-            return vy;
-        }
-
         public Double getSpeedModule() {
             return speedModule;
         }
 
         public Double getSpeedAngle() {
             return speedAngle;
+        }
+
+        public double getVx() {
+            return vx;
+        }
+
+        public double getVy() {
+            return vy;
         }
     }
 

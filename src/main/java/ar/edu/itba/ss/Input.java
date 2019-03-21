@@ -22,8 +22,10 @@ public class Input {
     private static int MIN_CELL_SIDE_QUANTITY = 50;
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;
-    private static Double MIN_VELOCITY = -0.05;
-    private static Double MAX_VELOCITY = 0.05;
+    private static Double MIN_VELOCITY = 0.3;
+    private static Double MAX_VELOCITY = 0.3;
+    private static Double MIN_ANGLE = 0.0;
+    private static Double MAX_ANGLE = Math.PI * 2;
 
     private Long particlesQuantity;
     private int cellSideQuantity;
@@ -44,32 +46,16 @@ public class Input {
         this.interactionRadio = defaultInteractionRadio;
         this.cellSideQuantity = 19;
         this.particles = new ArrayList<>();
-        for (int i = 0 ; i < defaultIterations ; i++ ){
-            for (int p = 0 ; p < this.particlesQuantity ; p++ ){
-                if (i == 0){
-                    this.particles.add(new Particle(
-                            random.nextDouble() * MAX_PARTICLE_RADIO + MIN_PARTICLE_RADIO,
-                            null,   //TODO: Put real attributes
-                            random.nextDouble() * (double) this.systemSideLength,
-                            random.nextDouble() * (double) this.systemSideLength,
-                            (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
-                            (random.nextBoolean()?-1:1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY)
-                    ));
-                }else{
-                    Particle current = this.particles.get(p);
-                    Double newX = current.getStates().get(i-1).getX() + current.getStates().get(i-1).getVx();
-                    if (newX < 0) newX = this.systemSideLength - Math.abs(newX % this.systemSideLength);
-                    if (newX > this.systemSideLength) newX = newX % this.systemSideLength;
-                    Double newY = current.getStates().get(i-1).getY() + current.getStates().get(i-1).getVy();
-                    if (newY < 0) newY = this.systemSideLength - Math.abs(newY % this.systemSideLength);
-                    if (newY > this.systemSideLength) newY = newY % this.systemSideLength;
-                    current.addState(
-                            newX, newY,
-                            current.getStates().get(i-1).getVx() + (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
-                            current.getStates().get(i-1).getVy() + (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY)
-                    );
-                }
-            }
+        // set particles with random position and speed angle
+        for (int p = 0 ; p < this.particlesQuantity ; p++ ){
+            this.particles.add(new Particle(
+                    random.nextDouble() * MAX_PARTICLE_RADIO + MIN_PARTICLE_RADIO,
+                    null,   //TODO: Put real attributes
+                    random.nextDouble() * (double) this.systemSideLength,
+                    random.nextDouble() * (double) this.systemSideLength,
+                    (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
+                    (random.nextBoolean()?-1:1)*(random.nextDouble() * MAX_ANGLE + MIN_ANGLE)
+            ));
         }
         this.selectedParticle = this.particles.get(random.nextInt(this.particles.size()));
         System.out.println("Random input generated.");
