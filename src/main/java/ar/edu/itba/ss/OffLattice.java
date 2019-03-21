@@ -19,23 +19,17 @@ public class OffLattice {
         }else
             input=new Input();
 
-        Grid grid;
-        grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
-        grid.setParticles(input.getParticles());
 
         List<Map<Particle, List<Particle>>> results=new LinkedList<>();
-        // TODO: replace 10 with a command value
-        for(int time=0;time<10;time++) {
-            for (Particle p : input.getParticles()) {
-                p.move(input.getSystemSideLength());
-                //update speed angle
-            }
+
+        for(int time=0;time<input.getIterationsQuantity();time++) {
+            Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
+            grid.setParticles(input.getParticles(), time);
             results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition()));
         }
 
-        // TODO: print all the results in the file
         if(input.getSelectedParticle()!=null)
-            Output.generatePositionOutput(results.get(results.size()-1),input.getSelectedParticle());
+            Output.generatePositionOutput(results,input.getSelectedParticle());
         else
             Output.generatePositionOutput(input.getParticles());
 
@@ -58,6 +52,9 @@ public class OffLattice {
         M.setRequired(true);
         options.addOption(M);
 
+        Option id = new Option("id", true, "id");
+        id.setRequired(true);
+        options.addOption(id);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();

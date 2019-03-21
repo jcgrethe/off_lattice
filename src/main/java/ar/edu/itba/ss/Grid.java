@@ -41,12 +41,12 @@ public class Grid {
         return sideLength;
     }
 
-    public void setParticles(List<Particle> particles){
+    public void setParticles(List<Particle> particles, int state){
         usedCells = new HashSet<>();
         Double cellSideLength = Double.valueOf(sideLength) / Double.valueOf(sideCellsQuantity);
         for (Particle particle : particles){
-            int row = (int)Math.floor(particle.getStates().get(0).getY() / cellSideLength); // Cast truncates
-            int column = (int)Math.floor(particle.getStates().get(0).getX() / cellSideLength); // Cast truncates
+            int row = (int)Math.floor(particle.getStates().get(state).getY() / cellSideLength); // Cast truncates
+            int column = (int)Math.floor(particle.getStates().get(state).getX() / cellSideLength); // Cast truncates
             cells[row][column].addParticle(particle);
             usedCells.add(new Pair(row, column));
         }
