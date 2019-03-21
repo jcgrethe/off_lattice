@@ -9,21 +9,21 @@ public class Input {
 
     // Defined values
     private static int defaultSystemSideLength = 20;
-    private static int defaultIterations = 20;
+    private static int defaultIterations = 50;
     private static Double defaultInteractionRadio = 1.0;
     private static Double defaultParticleRadio = 0.25;
     private static int MAX_SYSTEM_SIDE_LENGTH = 40;
     private static int MIN_SYSTEM_SIDE_LENGTH = 10;
-    private static Double MAX_INTERACTION_RADIO = 3.0;
+    private static Double MAX_INTERACTION_RADIO = 2.0;
     private static Double MIN_INTERACTION_RADIO = 1.1;
-    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(5000);
-    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(5000);
+    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(1000);
+    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(1000);
     private static int MAX_CELL_SIDE_QUANTITY = 100;
-    private static int MIN_CELL_SIDE_QUANTITY = 10;
-    private static Double MAX_PARTICLE_RADIO = 0.6;
-    private static Double MIN_PARTICLE_RADIO = 0.3;
-    private static Double MIN_VELOCITY = -2.0;
-    private static Double MAX_VELOCITY = 2.0;
+    private static int MIN_CELL_SIDE_QUANTITY = 50;
+    private static Double MAX_PARTICLE_RADIO = 0.5;
+    private static Double MIN_PARTICLE_RADIO = 0.2;
+    private static Double MIN_VELOCITY = -0.1;
+    private static Double MAX_VELOCITY = 0.1;
 
     private Long particlesQuantity;
     private int cellSideQuantity;
@@ -52,8 +52,8 @@ public class Input {
                             null,   //TODO: Put real attributes
                             random.nextDouble() * (double) this.systemSideLength,
                             random.nextDouble() * (double) this.systemSideLength,
-                            random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY,
-                            random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY
+                            (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
+                            (random.nextBoolean()?-1:1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY)
                     ));
                 }else{
                     Particle current = this.particles.get(p);
@@ -65,8 +65,8 @@ public class Input {
                     if (newY > this.systemSideLength) newY = newY % this.systemSideLength;
                     current.addState(
                             newX, newY,
-                            current.getStates().get(i-1).getVx() + (random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
-                            current.getStates().get(i-1).getVy() + (random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY)
+                            current.getStates().get(i-1).getVx() + (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
+                            current.getStates().get(i-1).getVy() + (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY)
                     );
                 }
             }

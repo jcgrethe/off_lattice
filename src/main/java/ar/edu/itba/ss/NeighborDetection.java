@@ -104,7 +104,7 @@ public class NeighborDetection {
     private static List<Particle> getNeighborParticles(Particle current, Cell cell, Double interactionRadio, boolean contorn, int gridSize){
         return cell.getParticles().stream()
                 .parallel()
-                .filter(another -> getDistance(current, another, contorn, gridSize) - current.getRadio() <= interactionRadio)
+//                .filter(another -> (getDistance(current, another, contorn, gridSize) - current.getRadio() - another.getRadio()) <= interactionRadio)
                 .filter(another -> !current.equals(another))
                 .collect(Collectors.toList());
     }
