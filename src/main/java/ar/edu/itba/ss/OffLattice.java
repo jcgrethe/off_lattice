@@ -25,7 +25,7 @@ public class OffLattice {
         for(int time=0;time<input.getIterationsQuantity();time++) {
             Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
             grid.setParticles(input.getParticles(), time);
-            results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition()));
+            results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
         }
 
         if(input.getSelectedParticle()!=null)
