@@ -11,20 +11,13 @@ public class Input {
     private static int defaultSystemSideLength = 30;
     private static int defaultIterations = 70;
     private static Double defaultInteractionRadio = 1.0;
-    private static Double defaultParticleRadio = 0.25;
-    private static int MAX_SYSTEM_SIDE_LENGTH = 40;
-    private static int MIN_SYSTEM_SIDE_LENGTH = 10;
-    private static Double MAX_INTERACTION_RADIO = 2.0;
-    private static Double MIN_INTERACTION_RADIO = 1.1;
     private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(2000);
     private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(2000);
-    private static int MAX_CELL_SIDE_QUANTITY = 100;
-    private static int MIN_CELL_SIDE_QUANTITY = 50;
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;
     private static Double MIN_VELOCITY = 0.3;
     private static Double MAX_VELOCITY = 0.3;
-    private static Double MIN_ANGLE = 0.0;
+    private static Double MIN_ANGLE = - Math.PI * 2;
     private static Double MAX_ANGLE = Math.PI * 2;
 
     private Long particlesQuantity;

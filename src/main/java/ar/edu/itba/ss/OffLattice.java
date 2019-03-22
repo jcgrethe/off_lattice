@@ -62,7 +62,7 @@ public class OffLattice {
         options.addOption(M);
 
         Option id = new Option("id", true, "id");
-        id.setRequired(true);
+        id.setRequired(false);
         options.addOption(id);
 
         CommandLineParser parser = new DefaultParser();
