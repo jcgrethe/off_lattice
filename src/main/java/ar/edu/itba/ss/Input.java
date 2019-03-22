@@ -19,6 +19,7 @@ public class Input {
     private static Double MAX_VELOCITY = 0.3;
     private static Double MIN_ANGLE = - Math.PI * 2;
     private static Double MAX_ANGLE = Math.PI * 2;
+    private int noise;
 
     private Long particlesQuantity;
     private int cellSideQuantity;
@@ -31,8 +32,9 @@ public class Input {
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
      */
-    public Input(){
+    public Input(int noise){
         Random random = new Random();
+        this.noise=noise;
         this.systemSideLength = defaultSystemSideLength;
         this.particlesQuantity = (long) random.nextInt(MAX_PARTICLE_QUANTITY - MIN_PARTICLE_QUANTITY + 1) + MIN_PARTICLE_QUANTITY;
         this.contornCondition = true;

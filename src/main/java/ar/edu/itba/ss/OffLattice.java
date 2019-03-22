@@ -17,7 +17,7 @@ public class OffLattice {
         if (cmd.getOptionValue('s')!=null && cmd.getOptionValue('d')!= null) {
             input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'), true , Long.valueOf(cmd.getOptionValue("id")));
         }else
-            input=new Input();
+            input=new Input(Integer.valueOf(cmd.getOptionValue('n')));
 
 
         List<Map<Particle, List<Particle>>> results=new LinkedList<>();
@@ -64,6 +64,10 @@ public class OffLattice {
         Option id = new Option("id", true, "id");
         id.setRequired(false);
         options.addOption(id);
+
+        Option noise = new Option("n", "noise", true, "noise");
+        noise.setRequired(true);
+        options.addOption(noise);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();

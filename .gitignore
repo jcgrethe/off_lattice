@@ -4,6 +4,9 @@
 
 ### Eclipse ###
 
+*.txt
+*.xyz
+*.text
 .metadata
 bin/
 tmp/
