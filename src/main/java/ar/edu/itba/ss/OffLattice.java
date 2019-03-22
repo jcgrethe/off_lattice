@@ -29,10 +29,7 @@ public class OffLattice {
             updateParticles(input, results.get(results.size() - 1));
         }
 
-        if(input.getSelectedParticle()!=null)
-            Output.generatePositionOutput(results,input.getSelectedParticle());
-        else
-            Output.generatePositionOutput(input.getParticles());
+        Output.generatePositionOutput(results,input.getSelectedParticle());
 
     }
 
