@@ -7,6 +7,8 @@
 *.txt
 *.xyz
 *.text
+.txt
+.xyz
 .metadata
 bin/
 tmp/
