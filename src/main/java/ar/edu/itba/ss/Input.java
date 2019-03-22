@@ -9,7 +9,7 @@ public class Input {
 
     // Defined values
     private static int defaultSystemSideLength = 30;
-    private static int defaultIterations = 400;
+    private static int defaultIterations = 50;
     private static Double defaultInteractionRadio = 1.0;
     private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(2000);
     private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(2000);
