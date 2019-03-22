@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 public class Particle {
 
@@ -51,14 +52,19 @@ public class Particle {
     }
 
     private double average(List<Particle> neighbors){
-        return Math.atan2(
-                DoubleStream.concat(DoubleStream.of(Math.sin(this.getLastState().speedAngle)), neighbors.stream()
-                        .mapToDouble(particle -> particle.getLastState().speedAngle).map(Math::sin))
-                        .average().getAsDouble(),
-                DoubleStream.concat(DoubleStream.of(Math.cos(this.getLastState().speedAngle)), neighbors.stream()
-                        .mapToDouble(particle -> particle.getLastState().speedAngle).map(Math::cos))
-                        .average().getAsDouble()
-        );
+        Double avgSin = 0.0;
+        for (Particle particle : neighbors)
+            avgSin += Math.sin(particle.getLastState().getSpeedAngle());
+        avgSin += Math.sin(getLastState().getSpeedAngle());
+        avgSin/=(neighbors.size() + 1);
+
+        Double avgCos = 0.0;
+        for (Particle particle : neighbors)
+            avgCos += Math.cos(particle.getLastState().getSpeedAngle());
+        avgCos += Math.cos(getLastState().getSpeedAngle());
+        avgCos/=(neighbors.size() + 1);
+
+        return Math.atan2(avgSin, avgCos);
     }
 
     public State getLastState(){

@@ -125,6 +125,8 @@ public class Output {
         bufferedWriter.newLine();
         String print = particle.getId() + " " + particle.getStates().get(state).getX()
                 + " " + particle.getStates().get(state).getY()
+                + " " + particle.getStates().get(state).getVx()
+                + " " + particle.getStates().get(state).getVy()
                 + " " + particle.getRadio() + " " + r.toString() + " " + g.toString() + " " + b.toString() + " " + transparency.toString();
         bufferedWriter.write(print);
     }

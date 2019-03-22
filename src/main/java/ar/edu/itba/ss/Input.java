@@ -9,14 +9,15 @@ public class Input {
 
     // Defined values
     private static int defaultSystemSideLength = 30;
-    private static int defaultIterations = 400;
+    private static int defaultIterations = 100;
     private static Double defaultInteractionRadio = 1.0;
-    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(2000);
-    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(2000);
+    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(1000);
+    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(1000);
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;
     private static Double MIN_VELOCITY = 0.3;
     private static Double MAX_VELOCITY = 0.3;
+    private static Double defaultVelocityModule = 0.3;
     private static Double MIN_ANGLE = - Math.PI * 2;
     private static Double MAX_ANGLE = Math.PI * 2;
     private int noise;
@@ -48,7 +49,7 @@ public class Input {
                     null,   //TODO: Put real attributes
                     random.nextDouble() * (double) this.systemSideLength,
                     random.nextDouble() * (double) this.systemSideLength,
-                    (random.nextBoolean()?1:-1)*(random.nextDouble() * MAX_VELOCITY + MIN_VELOCITY),
+                    defaultVelocityModule,
                     (random.nextBoolean()?-1:1)*(random.nextDouble() * MAX_ANGLE + MIN_ANGLE)
             ));
         }
@@ -79,7 +80,7 @@ public class Input {
                 Random r = new Random();
                 particleId = r.nextLong() % particlesQuantity;
             }
-            particleId= Long.valueOf(10);
+            particleId= Long.valueOf(269);
             this.cellSideQuantity = Integer.valueOf(staticFileReader.readLine());
             this.particles = new ArrayList<>();
             dinamicFileReader.readLine();  //Discard first time notation
