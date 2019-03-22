@@ -142,4 +142,8 @@ public class Input {
     public int getIterationsQuantity() {
         return defaultIterations;
     }
+
+    public int getNoise() {
+        return noise;
+    }
 }

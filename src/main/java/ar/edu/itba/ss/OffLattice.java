@@ -40,7 +40,7 @@ public class OffLattice {
 
         //TODO: get noise from input
         input.getParticles().stream().forEach(particle -> {
-            particle.move(input.getSystemSideLength(),0,neighbors.get(particle));
+            particle.move(input.getSystemSideLength(),input.getNoise(),neighbors.get(particle));
         });
     }
 
