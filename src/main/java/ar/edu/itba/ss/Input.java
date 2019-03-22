@@ -9,7 +9,7 @@ public class Input {
 
     // Defined values
     private static int defaultSystemSideLength = 30;
-    private static int defaultIterations = 70;
+    private static int defaultIterations = 400;
     private static Double defaultInteractionRadio = 1.0;
     private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(2000);
     private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(2000);
@@ -39,7 +39,7 @@ public class Input {
         this.particlesQuantity = (long) random.nextInt(MAX_PARTICLE_QUANTITY - MIN_PARTICLE_QUANTITY + 1) + MIN_PARTICLE_QUANTITY;
         this.contornCondition = true;
         this.interactionRadio = defaultInteractionRadio;
-        this.cellSideQuantity = 19;
+        this.cellSideQuantity = (int) Math.ceil(systemSideLength/interactionRadio) - 1 ;
         this.particles = new ArrayList<>();
         // set particles with random position and speed angle
         for (int p = 0 ; p < this.particlesQuantity ; p++ ){
