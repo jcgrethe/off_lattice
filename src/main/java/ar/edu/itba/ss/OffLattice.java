@@ -26,18 +26,19 @@ public class OffLattice {
             Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
             grid.setParticles(input.getParticles(), time);
             results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
-            updateParticles(input, results.get(results.size() - 1));
+            updateParticles(input, ((LinkedList<Map<Particle,List<Particle>>>) results).getLast(),time);
+            System.out.println(time);
         }
+        Output.generatePositionOutput(results, input.getSelectedParticle());
 
-        Output.generatePositionOutput(results,input.getSelectedParticle());
 
     }
 
-    private static void updateParticles(Input input, Map<Particle, List<Particle>> neighbors) {
+    private static void updateParticles(Input input, Map<Particle, List<Particle>> neighbors, int time) {
 
         //TODO: get noise from input
         input.getParticles().stream().forEach(particle -> {
-            particle.move(input.getSystemSideLength(),input.getNoise(),neighbors.get(particle));
+            particle.move(input.getSystemSideLength(),input.getNoise(),neighbors.get(particle),time);
         });
     }
 
