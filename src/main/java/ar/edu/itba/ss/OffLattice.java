@@ -22,13 +22,17 @@ public class OffLattice {
 
         List<Map<Particle, List<Particle>>> results=new LinkedList<>();
 
-        for(int time=0;time<input.getIterationsQuantity();time++) {
-            Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
-            grid.setParticles(input.getParticles(), time);
-            results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
-            updateParticles(input, ((LinkedList<Map<Particle,List<Particle>>>) results).getLast(),time);
-            System.out.println(time);
+        try {
+            for(int time=0;time<input.getIterationsQuantity();time++) {
+                Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
+                grid.setParticles(input.getParticles(), time);
+                results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
+                updateParticles(input, ((LinkedList<Map<Particle,List<Particle>>>) results).getLast(),time);
+                }
+        }catch (OutOfMemoryError o){
+            System.out.println("Out of memory. Printing "+ results.size()+" iteration");
         }
+
         Output.generatePositionOutput(results, input.getSelectedParticle());
 
 
