@@ -15,9 +15,14 @@ public class OffLattice {
         CommandLine cmd = getOptions(args);
         Input input;
         if (cmd.getOptionValue('s')!=null && cmd.getOptionValue('d')!= null) {
-            input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'), true , Long.valueOf(cmd.getOptionValue("id")));
+            input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'),
+                    Double.valueOf(cmd.getOptionValue('n')),
+                    Integer.valueOf(cmd.getOptionValue('N')),
+                    Integer.valueOf(cmd.getOptionValue('L')));
         }else
-            input=new Input(Double.valueOf(cmd.getOptionValue('n')));
+            input=new Input(Double.valueOf(cmd.getOptionValue('n')),
+                            Integer.valueOf(cmd.getOptionValue('N')),
+                            Integer.valueOf(cmd.getOptionValue('L')));
 
 
         List<Map<Particle, List<Particle>>> results=new LinkedList<>();
@@ -68,17 +73,17 @@ public class OffLattice {
         dinamicInput.setRequired(false);
         options.addOption(dinamicInput);
 
-        Option M = new Option("M", true, "M");
-        M.setRequired(true);
-        options.addOption(M);
-
-        Option id = new Option("id", true, "id");
-        id.setRequired(false);
-        options.addOption(id);
-
         Option noise = new Option("n", "noise", true, "noise");
         noise.setRequired(true);
         options.addOption(noise);
+
+        Option L = new Option("L", "length", true, "length");
+        L.setRequired(true);
+        options.addOption(L);
+
+        Option quantity = new Option("N", "quantity", true, "quantity(N)");
+        quantity.setRequired(true);
+        options.addOption(quantity);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();

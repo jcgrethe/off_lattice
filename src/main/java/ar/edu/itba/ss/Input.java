@@ -8,15 +8,10 @@ import java.util.List;
 public class Input {
 
     // Defined values
-    private static int defaultSystemSideLength = 3;
     private static int defaultIterations = 1000;
     private static Double defaultInteractionRadio = 1.0;
-    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(40);
-    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(40);
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;
-    private static Double MIN_VELOCITY = 0.3;
-    private static Double MAX_VELOCITY = 0.3;
     private static Double defaultVelocityModule = 0.3;
     private static Double MIN_ANGLE = 0.0;
     private static Double MAX_ANGLE = Math.PI * 2;
@@ -33,11 +28,11 @@ public class Input {
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
      */
-    public Input(double noise){
+    public Input(double noise, int quantity,int length){
         Random random = new Random();
         this.noise=noise;
-        this.systemSideLength = defaultSystemSideLength;
-        this.particlesQuantity = (long) random.nextInt(MAX_PARTICLE_QUANTITY - MIN_PARTICLE_QUANTITY + 1) + MIN_PARTICLE_QUANTITY;
+        this.systemSideLength = length;
+        this.particlesQuantity = Long.valueOf(quantity);
         this.contornCondition = true;
         this.interactionRadio = defaultInteractionRadio;
         this.cellSideQuantity = (int) Math.ceil(systemSideLength/interactionRadio) - 1 ;
@@ -63,25 +58,21 @@ public class Input {
      *
      * @param staticFileName        The static parameters file, such as side length.
      * @param dinamicFileName       The dinamic parameters file, such as velocity in one state for each particle.
-     * @param contornCondition      If the contorn condition is on.
+     * @param noise                 The noise param.
      * @throws IOException          e.g. if one of the files cannot be founded.
      */
-    public Input(String staticFileName, String dinamicFileName, Boolean contornCondition, Long particleId) throws IOException{
-        this.contornCondition = contornCondition;
-        this.systemSideLength = defaultSystemSideLength;
+    public Input(String staticFileName, String dinamicFileName, double noise, int quantity,int length) throws IOException{
+        this.contornCondition = true;
+        this.systemSideLength = length;
         this.interactionRadio = defaultInteractionRadio;
         BufferedReader staticFileReader, dinamicFileReader;
         try{
             // Static file
             staticFileReader = new BufferedReader(new FileReader(staticFileName));
             dinamicFileReader = new BufferedReader(new FileReader(dinamicFileName));
-            this.particlesQuantity = Long.valueOf(staticFileReader.readLine());
-            if (particleId ==null){
-                Random r = new Random();
-                particleId = r.nextLong() % particlesQuantity;
-            }
-            particleId= Long.valueOf(269);
-            this.cellSideQuantity = Integer.valueOf(staticFileReader.readLine());
+            this.particlesQuantity = Long.valueOf(quantity);
+            this.noise=noise;
+            this.cellSideQuantity = (int) Math.ceil(systemSideLength/interactionRadio) - 1 ;
             this.particles = new ArrayList<>();
             dinamicFileReader.readLine();  //Discard first time notation
             while(staticFileReader.ready()){    //Only time zero for dinamic file
@@ -95,8 +86,6 @@ public class Input {
                         Double.valueOf(dinamicLineValues[2]),
                         Double.valueOf(dinamicLineValues[3])
                 );
-                if( particleId != null && p.getId()==particleId.longValue())
-                    this.selectedParticle = p;
                 particles.add(p);
             }
             if (particles.size() != particlesQuantity)
