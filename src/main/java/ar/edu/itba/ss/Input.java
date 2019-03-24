@@ -47,7 +47,6 @@ public class Input {
                     (random.nextBoolean()?-1:1)*(random.nextDouble() * MAX_ANGLE + MIN_ANGLE)
             ));
         }
-        System.out.println("Random input generated.");
         Output.generateInputFiles(this.particlesQuantity, this.systemSideLength, this.particles);
     }
 

@@ -12,46 +12,48 @@ public class OffLattice {
     // Program Arguments: "./NeighborDetection/resources/sample_input_static.txt" "./NeighborDetection/resources/sample_input_dinamic.txt"
     public static void main(String[] args) throws IOException {
         double prom=0;
-        for (int x=0;x<10;x++) {
-            CommandLine cmd = getOptions(args);
-            Input input;
-            if (cmd.getOptionValue('s') != null && cmd.getOptionValue('d') != null) {
-                input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'),
-                        Double.valueOf(cmd.getOptionValue('n')),
-                        Integer.valueOf(cmd.getOptionValue('N')),
-                        Integer.valueOf(cmd.getOptionValue('L')));
-            } else
-                input = new Input(Double.valueOf(cmd.getOptionValue('n')),
-                        Integer.valueOf(cmd.getOptionValue('N')),
-                        Integer.valueOf(cmd.getOptionValue('L')));
+        for (double noise=0; noise<=5; noise+=0.25){
+            for (int x=0;x<10;x++) {
+                CommandLine cmd = getOptions(args);
+                Input input;
+                if (cmd.getOptionValue('s') != null && cmd.getOptionValue('d') != null) {
+                    input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'),
+                            Double.valueOf(cmd.getOptionValue('n')),
+                            Integer.valueOf(cmd.getOptionValue('N')),
+                            Integer.valueOf(cmd.getOptionValue('L')));
+                } else
+                    input = new Input(noise,
+                            Integer.valueOf(cmd.getOptionValue('N')),
+                            Integer.valueOf(cmd.getOptionValue('L')));
 
 
-            List<Map<Particle, List<Particle>>> results = new LinkedList<>();
+                List<Map<Particle, List<Particle>>> results = new LinkedList<>();
 
-            try {
-                for (int time = 0; time < input.getIterationsQuantity(); time++) {
-                    Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
-                    grid.setParticles(input.getParticles(), time);
-                    results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
-                    updateParticles(input, ((LinkedList<Map<Particle, List<Particle>>>) results).getLast(), time);
+                try {
+                    for (int time = 0; time < input.getIterationsQuantity(); time++) {
+                        Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
+                        grid.setParticles(input.getParticles(), time);
+                        results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
+                        updateParticles(input, ((LinkedList<Map<Particle, List<Particle>>>) results).getLast(), time);
+                    }
+                } catch (OutOfMemoryError o) {
+                    System.out.println("Out of memory. Printing " + results.size() + " iteration");
                 }
-            } catch (OutOfMemoryError o) {
-                System.out.println("Out of memory. Printing " + results.size() + " iteration");
+
+                double sumVx = 0;
+                double sumVy = 0;
+                for (Particle p : input.getParticles()) {
+                    sumVx += p.getState(input.getIterationsQuantity() - 1).getVx();
+                    sumVy += p.getState(input.getIterationsQuantity() - 1).getVy();
+                }
+                double sumV = Math.sqrt(Math.pow(sumVx, 2) + Math.pow(sumVy, 2));
+                double va = sumV / (input.getVelocityMod() * input.getParticlesQuantity());
+                System.out.println("Va: " + va);
+                prom+=va;
             }
 
-            double sumVx = 0;
-            double sumVy = 0;
-            for (Particle p : input.getParticles()) {
-                sumVx += p.getState(input.getIterationsQuantity() - 1).getVx();
-                sumVy += p.getState(input.getIterationsQuantity() - 1).getVy();
-            }
-            double sumV = Math.sqrt(Math.pow(sumVx, 2) + Math.pow(sumVy, 2));
-            double va = sumV / (input.getVelocityMod() * input.getParticlesQuantity());
-            System.out.println("Va: " + va);
-            prom+=va;
+            System.out.println("prom; "+prom);
         }
-
-        System.out.println("prom; "+prom);
         //Output.generatePositionOutput(results);
 
 
