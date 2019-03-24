@@ -36,13 +36,13 @@ public class Particle {
     }
 
     public void move(double size, double noise, List<Particle> neighbors,int time) {
-        State lastState = getLastState(time);
+        State lastState = getState(time);
         final double auxX = (lastState.x + lastState.vx ) % size;
         final double auxY = (lastState.y + lastState.vy) % size;
         double x = auxX < 0 ? auxX + size : auxX;
         double y = auxY < 0 ? auxY + size : auxY;
 
-        double angle = newAngle(noise, -noise, neighbors,time);
+        double angle = newAngle(noise/2, -noise/2, neighbors,time);
         states.add(new State(x,y,lastState.speedModule,angle));
     }
 
@@ -54,20 +54,20 @@ public class Particle {
     private double average(List<Particle> neighbors,int time){
         Double avgSin = 0.0;
         for (Particle particle : neighbors)
-            avgSin += Math.sin(particle.getLastState(time).getSpeedAngle());
-        avgSin += Math.sin(getLastState(time).getSpeedAngle());
+            avgSin += Math.sin(particle.getState(time).getSpeedAngle());
+        avgSin += Math.sin(getState(time).getSpeedAngle());
         avgSin/=(neighbors.size() + 1);
 
         Double avgCos = 0.0;
         for (Particle particle : neighbors)
-            avgCos += Math.cos(particle.getLastState(time).getSpeedAngle());
-        avgCos += Math.cos(getLastState(time).getSpeedAngle());
+            avgCos += Math.cos(particle.getState(time).getSpeedAngle());
+        avgCos += Math.cos(getState(time).getSpeedAngle());
         avgCos/=(neighbors.size() + 1);
 
         return Math.atan2(avgSin, avgCos);
     }
 
-    public State getLastState(int time){
+    public State getState(int time){
        return states.get(time);
     }
 

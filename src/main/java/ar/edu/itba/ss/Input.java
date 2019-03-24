@@ -8,19 +8,19 @@ import java.util.List;
 public class Input {
 
     // Defined values
-    private static int defaultSystemSideLength = 30;
-    private static int defaultIterations = 100;
+    private static int defaultSystemSideLength = 3;
+    private static int defaultIterations = 1000;
     private static Double defaultInteractionRadio = 1.0;
-    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(1000);
-    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(1000);
+    private static int MAX_PARTICLE_QUANTITY = Integer.valueOf(40);
+    private static int MIN_PARTICLE_QUANTITY = Integer.valueOf(40);
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;
     private static Double MIN_VELOCITY = 0.3;
     private static Double MAX_VELOCITY = 0.3;
     private static Double defaultVelocityModule = 0.3;
-    private static Double MIN_ANGLE = - Math.PI * 2;
+    private static Double MIN_ANGLE = 0.0;
     private static Double MAX_ANGLE = Math.PI * 2;
-    private int noise;
+    private double noise;
 
     private Long particlesQuantity;
     private int cellSideQuantity;
@@ -33,7 +33,7 @@ public class Input {
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
      */
-    public Input(int noise){
+    public Input(double noise){
         Random random = new Random();
         this.noise=noise;
         this.systemSideLength = defaultSystemSideLength;
@@ -144,7 +144,11 @@ public class Input {
         return defaultIterations;
     }
 
-    public int getNoise() {
+    public double getNoise() {
         return noise;
+    }
+
+    public double getVelocityMod(){
+        return this.defaultVelocityModule;
     }
 }
