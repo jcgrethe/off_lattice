@@ -8,7 +8,7 @@ import java.util.List;
 public class Input {
 
     // Defined values
-    private static int defaultIterations = 1000;
+    private static int defaultIterations = 300;
     private static Double defaultInteractionRadio = 1.0;
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;

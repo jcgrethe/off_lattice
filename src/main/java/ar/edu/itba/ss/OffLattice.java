@@ -11,9 +11,12 @@ public class OffLattice {
 
     // Program Arguments: "./NeighborDetection/resources/sample_input_static.txt" "./NeighborDetection/resources/sample_input_dinamic.txt"
     public static void main(String[] args) throws IOException {
-        double prom=0;
+
         for (double noise=0; noise<=5; noise+=0.25){
+            double prom=0;
+            System.out.println("Noise: "+noise);
             for (int x=0;x<10;x++) {
+
                 CommandLine cmd = getOptions(args);
                 Input input;
                 if (cmd.getOptionValue('s') != null && cmd.getOptionValue('d') != null) {
@@ -48,11 +51,11 @@ public class OffLattice {
                 }
                 double sumV = Math.sqrt(Math.pow(sumVx, 2) + Math.pow(sumVy, 2));
                 double va = sumV / (input.getVelocityMod() * input.getParticlesQuantity());
-                System.out.println("Va: " + va);
+                //System.out.println("Va: " + va);
                 prom+=va;
             }
 
-            System.out.println("prom; "+prom);
+            System.out.println("prom; "+prom/10);
         }
         //Output.generatePositionOutput(results);
 
