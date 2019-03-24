@@ -17,7 +17,7 @@ public class OffLattice {
         if (cmd.getOptionValue('s')!=null && cmd.getOptionValue('d')!= null) {
             input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'), true , Long.valueOf(cmd.getOptionValue("id")));
         }else
-            input=new Input(Integer.valueOf(cmd.getOptionValue('n')));
+            input=new Input(Double.valueOf(cmd.getOptionValue('n')));
 
 
         List<Map<Particle, List<Particle>>> results=new LinkedList<>();
@@ -33,6 +33,15 @@ public class OffLattice {
             System.out.println("Out of memory. Printing "+ results.size()+" iteration");
         }
 
+        double sumVx =0;
+        double sumVy =0;
+        for (Particle p: input.getParticles()){
+            sumVx += p.getState(input.getIterationsQuantity()-1).getVx();
+            sumVy += p.getState(input.getIterationsQuantity()-1).getVy();
+        }
+        double sumV = Math.sqrt(Math.pow(sumVx,2)+Math.pow(sumVy,2));
+        double va = sumV/(input.getVelocityMod()*input.getParticlesQuantity());
+        System.out.println("Va: " + va);
         Output.generatePositionOutput(results, input.getSelectedParticle());
 
 
