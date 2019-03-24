@@ -47,7 +47,7 @@ public class OffLattice {
         double sumV = Math.sqrt(Math.pow(sumVx,2)+Math.pow(sumVy,2));
         double va = sumV/(input.getVelocityMod()*input.getParticlesQuantity());
         System.out.println("Va: " + va);
-        Output.generatePositionOutput(results, input.getSelectedParticle());
+        Output.generatePositionOutput(results);
 
 
     }

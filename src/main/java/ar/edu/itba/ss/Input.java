@@ -23,7 +23,6 @@ public class Input {
     private Boolean contornCondition;
     private int systemSideLength;
     private Double interactionRadio;
-    private Particle selectedParticle;
 
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
@@ -48,7 +47,6 @@ public class Input {
                     (random.nextBoolean()?-1:1)*(random.nextDouble() * MAX_ANGLE + MIN_ANGLE)
             ));
         }
-        this.selectedParticle = this.particles.get(random.nextInt(this.particles.size()));
         System.out.println("Random input generated.");
         Output.generateInputFiles(this.particlesQuantity, this.systemSideLength, this.particles);
     }
@@ -90,12 +88,6 @@ public class Input {
             }
             if (particles.size() != particlesQuantity)
                 throw new IllegalArgumentException();
-            // TODO: Validar L/M > Rc
-//            TODO: More than one state per particle
-//            while(dinamicFileReader.ready()){
-//                 dinamicFileReader.readLine();  //Discard time notation
-//                 particles.add(new Particle())
-//            }
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -123,10 +115,6 @@ public class Input {
 
     public Boolean getContornCondition() {
         return contornCondition;
-    }
-
-    public Particle getSelectedParticle() {
-        return selectedParticle;
     }
 
     public int getIterationsQuantity() {
