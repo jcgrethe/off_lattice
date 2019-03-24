@@ -14,35 +14,39 @@ public class OffLattice {
 
         CommandLine cmd = getOptions(args);
         Input input;
-        if (cmd.getOptionValue('s')!=null && cmd.getOptionValue('d')!= null) {
-            input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'), true , Long.valueOf(cmd.getOptionValue("id")));
-        }else
-            input=new Input(Double.valueOf(cmd.getOptionValue('n')));
+        if (cmd.getOptionValue('s') != null && cmd.getOptionValue('d') != null) {
+            input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'), true, Long.valueOf(cmd.getOptionValue("id")));
+        }
 
+        int prom=0;
+        for (int x = 0; x < 10; x++){
+            input = new Input(Double.valueOf(cmd.getOptionValue('n')));
 
-        List<Map<Particle, List<Particle>>> results=new LinkedList<>();
-
-        try {
-            for(int time=0;time<input.getIterationsQuantity();time++) {
-                Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
-                grid.setParticles(input.getParticles(), time);
-                results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
-                updateParticles(input, ((LinkedList<Map<Particle,List<Particle>>>) results).getLast(),time);
+            List<Map<Particle, List<Particle>>> results = new LinkedList<>();
+            try {
+                for (int time = 0; time < input.getIterationsQuantity(); time++) {
+                    Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
+                    grid.setParticles(input.getParticles(), time);
+                    results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
+                    updateParticles(input, ((LinkedList<Map<Particle, List<Particle>>>) results).getLast(), time);
                 }
-        }catch (OutOfMemoryError o){
-            System.out.println("Out of memory. Printing "+ results.size()+" iteration");
-        }
+            } catch (OutOfMemoryError o) {
+                System.out.println("Out of memory. Printing " + results.size() + " iteration");
+            }
 
-        double sumVx =0;
-        double sumVy =0;
-        for (Particle p: input.getParticles()){
-            sumVx += p.getState(input.getIterationsQuantity()-1).getVx();
-            sumVy += p.getState(input.getIterationsQuantity()-1).getVy();
+            double sumVx = 0;
+            double sumVy = 0;
+            for (Particle p : input.getParticles()) {
+                sumVx += p.getState(input.getIterationsQuantity() - 1).getVx();
+                sumVy += p.getState(input.getIterationsQuantity() - 1).getVy();
+            }
+            double sumV = Math.sqrt(Math.pow(sumVx, 2) + Math.pow(sumVy, 2));
+            double va = sumV / (input.getVelocityMod() * input.getParticlesQuantity());
+            System.out.println("Va: " + va);
+            prom += va;
         }
-        double sumV = Math.sqrt(Math.pow(sumVx,2)+Math.pow(sumVy,2));
-        double va = sumV/(input.getVelocityMod()*input.getParticlesQuantity());
-        System.out.println("Va: " + va);
-        Output.generatePositionOutput(results, input.getSelectedParticle());
+        System.out.println("prom: "+prom/10);
+        //Output.generatePositionOutput(results, input.getSelectedParticle());
 
 
     }
