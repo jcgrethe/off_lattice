@@ -12,23 +12,27 @@ public class OffLattice {
     // Program Arguments: "./NeighborDetection/resources/sample_input_static.txt" "./NeighborDetection/resources/sample_input_dinamic.txt"
     public static void main(String[] args) throws IOException {
 
-        for (double noise=0; noise<=5; noise+=0.25){
+        for (double density=2; density<=10; density+=1){
+            List<Double> lVa=new LinkedList<>();
             double prom=0;
-            System.out.println("Noise: "+noise);
+            //System.out.println("Noise: "+noise);
+
+            CommandLine cmd = getOptions(args);
+            Input input;
+            int n = (int)(density*Math.pow(Integer.valueOf(cmd.getOptionValue('L')),2));
+            double d = n/Math.pow(Integer.valueOf(cmd.getOptionValue('L')),2);
+            System.out.println("density: "+ d);
             for (int x=0;x<10;x++) {
 
-                CommandLine cmd = getOptions(args);
-                Input input;
                 if (cmd.getOptionValue('s') != null && cmd.getOptionValue('d') != null) {
                     input = new Input(cmd.getOptionValue('s'), cmd.getOptionValue('d'),
                             Double.valueOf(cmd.getOptionValue('n')),
                             Integer.valueOf(cmd.getOptionValue('N')),
                             Integer.valueOf(cmd.getOptionValue('L')));
                 } else
-                    input = new Input(noise,
-                            Integer.valueOf(cmd.getOptionValue('N')),
+                    input = new Input(Double.valueOf(cmd.getOptionValue('n')),
+                            n,
                             Integer.valueOf(cmd.getOptionValue('L')));
-
 
                 List<Map<Particle, List<Particle>>> results = new LinkedList<>();
 
@@ -52,10 +56,16 @@ public class OffLattice {
                 double sumV = Math.sqrt(Math.pow(sumVx, 2) + Math.pow(sumVy, 2));
                 double va = sumV / (input.getVelocityMod() * input.getParticlesQuantity());
                 //System.out.println("Va: " + va);
+                lVa.add(va);
                 prom+=va;
             }
-
-            System.out.println("prom; "+prom/10);
+            double auxerror = 0.0;
+            for(Double va: lVa){
+                auxerror+=Math.pow(Math.abs(va-prom/10),2);
+            }
+            double error= Math.sqrt(auxerror/10);
+            System.out.println("prom: "+ prom/10);
+            System.out.println("error: " + error);
         }
         //Output.generatePositionOutput(results);
 
