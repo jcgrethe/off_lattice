@@ -24,7 +24,7 @@ public class OffLattice {
                             Integer.valueOf(cmd.getOptionValue('N')),
                             Integer.valueOf(cmd.getOptionValue('L')));
 
-
+        System.out.println(input.getIterationsQuantity());
         List<Map<Particle, List<Particle>>> results=new LinkedList<>();
 
         try {
@@ -76,6 +76,10 @@ public class OffLattice {
         Option noise = new Option("n", "noise", true, "noise");
         noise.setRequired(true);
         options.addOption(noise);
+
+        Option iterations = new Option("i", "iterations", true, "iterations");
+        iterations.setRequired(false);
+        options.addOption(iterations);
 
         Option L = new Option("L", "length", true, "length");
         L.setRequired(true);
