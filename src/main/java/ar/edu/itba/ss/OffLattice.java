@@ -12,7 +12,7 @@ public class OffLattice {
     // Program Arguments: "./NeighborDetection/resources/sample_input_static.txt" "./NeighborDetection/resources/sample_input_dinamic.txt"
     public static void main(String[] args) throws IOException {
 
-        for (double density=2; density<=10; density+=1){
+        for (double density=7; density<=10; density+=1){
             List<Double> lVa=new LinkedList<>();
             double prom=0;
             //System.out.println("Noise: "+noise);
