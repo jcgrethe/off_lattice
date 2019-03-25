@@ -14,17 +14,16 @@ public class Output {
     private final static String STATIC_FILE = "sample_input_static.txt";
     private final static String DINAMIC_FILE = "sample_input_dinamic.txt";
 
-    public static void generatePositionOutput(List<Map<Particle,List<Particle>>> result) {
+    public static void generatePositionOutput(List<Particle> result, int time) {
         if (result == null) return; //TODO: Throw exception
         try{
             FileWriter fileWriter = new FileWriter(FILENAME2);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-            for (int state = 0 ; state < result.size() ; state++ ){
-                Set<Particle> particles = result.get(state).keySet();
-                bufferedWriter.write(Integer.valueOf(result.get(state).size()).toString());
+            for (int state = 0 ; state < time ; state++ ){
+                bufferedWriter.write(Integer.valueOf(result.size()).toString());
                 bufferedWriter.newLine();
-                for (Particle particle: particles){
+                for (Particle particle: result){
                     printToFile(bufferedWriter,particle, state);
                 }
                 bufferedWriter.newLine();

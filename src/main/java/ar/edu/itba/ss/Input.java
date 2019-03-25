@@ -8,11 +8,11 @@ import java.util.List;
 public class Input {
 
     // Defined values
-    private static int defaultIterations = 300;
+    private static int defaultIterations = 1000;
     private static Double defaultInteractionRadio = 1.0;
     private static Double MAX_PARTICLE_RADIO = 0.5;
     private static Double MIN_PARTICLE_RADIO = 0.2;
-    private static Double defaultVelocityModule = 0.03;
+    private static Double defaultVelocityModule = 0.3;
     private static Double MIN_ANGLE = 0.0;
     private static Double MAX_ANGLE = Math.PI * 2;
     private double noise;
@@ -118,7 +118,7 @@ public class Input {
     }
 
     public int getIterationsQuantity() {
-        return defaultIterations;
+        return this.defaultIterations;
     }
 
     public void setIterationsQuantity(int quantity) {

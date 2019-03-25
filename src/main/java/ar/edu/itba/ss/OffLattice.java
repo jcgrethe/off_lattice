@@ -3,6 +3,7 @@ package ar.edu.itba.ss;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,19 +24,21 @@ public class OffLattice {
             input=new Input(Double.valueOf(cmd.getOptionValue('n')),
                             Integer.valueOf(cmd.getOptionValue('N')),
                             Integer.valueOf(cmd.getOptionValue('L')));
+        if ( cmd.getOptionValue('i') != null)
+            input.setIterationsQuantity(Integer.valueOf(cmd.getOptionValue('i')));
 
-        System.out.println(input.getIterationsQuantity());
-        List<Map<Particle, List<Particle>>> results=new LinkedList<>();
-
+        Map<Particle, List<Particle>> results;
+        int time = 0;
         try {
-            for(int time=0;time<input.getIterationsQuantity();time++) {
+            for(time =0;time<input.getIterationsQuantity();time++) {
                 Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
                 grid.setParticles(input.getParticles(), time);
-                results.add(NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time));
-                updateParticles(input, ((LinkedList<Map<Particle,List<Particle>>>) results).getLast(),time);
+                results=NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time);
+                updateParticles(input, results,time);
+                System.out.println(time);
                 }
         }catch (OutOfMemoryError o){
-            System.out.println("Out of memory. Printing "+ results.size()+" iteration");
+            System.out.println("Out of memory. Printing "+ time +" iteration");
         }
 
         double sumVx =0;
@@ -47,7 +50,7 @@ public class OffLattice {
         double sumV = Math.sqrt(Math.pow(sumVx,2)+Math.pow(sumVy,2));
         double va = sumV/(input.getVelocityMod()*input.getParticlesQuantity());
         System.out.println("Va: " + va);
-        Output.generatePositionOutput(results);
+        Output.generatePositionOutput(input.getParticles(), input.getIterationsQuantity());
 
 
     }
