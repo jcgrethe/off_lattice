@@ -35,7 +35,6 @@ public class OffLattice {
                 grid.setParticles(input.getParticles(), time);
                 results=NeighborDetection.getNeighbors(grid, grid.getUsedCells(), input.getInteractionRadio(), input.getContornCondition(), time);
                 updateParticles(input, results,time);
-                System.out.println(time);
                 }
         }catch (OutOfMemoryError o){
             System.out.println("Out of memory. Printing "+ time +" iteration");
