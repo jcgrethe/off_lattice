@@ -27,7 +27,7 @@ public class OffLattice {
         if ( cmd.getOptionValue('i') != null)
             input.setIterationsQuantity(Integer.valueOf(cmd.getOptionValue('i')));
 
-        System.out.println("N="+input.getParticlesQuantity()+" ; L="+ input.getSystemSideLength()+ " ; n="+ input.getNoise());
+        System.out.println("N="+input.getParticlesQuantity()+" ; L="+ input.getSystemSideLength()+ " ; n="+ input.getNoise()+ " ; i="+ input.getIterationsQuantity());
         System.out.println("Starting simulation");
         Map<Particle, List<Particle>> results;
         int time = 0;
