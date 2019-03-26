@@ -10,3 +10,5 @@ Off-lattice cell division simulation
       - Optional: -i (time).
       Example: java -jar off_lattice.jar -i=300 -N=1000 -L=10 -n=0
       
+- Open the simulation file position.xyz in ovito.
+      
