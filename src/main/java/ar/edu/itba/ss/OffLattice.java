@@ -27,8 +27,11 @@ public class OffLattice {
         if ( cmd.getOptionValue('i') != null)
             input.setIterationsQuantity(Integer.valueOf(cmd.getOptionValue('i')));
 
+        System.out.println("N="+input.getParticlesQuantity()+" ; L="+ input.getSystemSideLength()+ " ; n="+ input.getNoise());
+        System.out.println("Starting simulation");
         Map<Particle, List<Particle>> results;
         int time = 0;
+        long timeMilis= System.currentTimeMillis();
         try {
             for(time =0;time<input.getIterationsQuantity();time++) {
                 Grid grid = new Grid(input.getCellSideQuantity(), input.getSystemSideLength());
@@ -39,6 +42,8 @@ public class OffLattice {
         }catch (OutOfMemoryError o){
             System.out.println("Out of memory. Printing "+ time +" iteration");
         }
+        long end = System.currentTimeMillis();
+        System.out.println("Simulation finished. Duration: "+ ((end-timeMilis)/1000.0)+ " seconds");
 
         double sumVx =0;
         double sumVy =0;
@@ -50,7 +55,7 @@ public class OffLattice {
         double va = sumV/(input.getVelocityMod()*input.getParticlesQuantity());
         System.out.println("Va: " + va);
         Output.generatePositionOutput(input.getParticles(), input.getIterationsQuantity());
-
+        System.out.println("Files generated");
 
     }
 

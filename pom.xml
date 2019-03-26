@@ -117,6 +117,20 @@
                   </execution>
               </executions>
           </plugin>
+          <plugin>
+              <artifactId>maven-assembly-plugin</artifactId>
+              <configuration>
+                  <archive>
+                      <manifest>
+                          <mainClass>ar.edu.itba.ss.OffLattice</mainClass>
+                      </manifest>
+                  </archive>
+                  <descriptorRefs>
+                      <descriptorRef>jar-with-dependencies</descriptorRef>
+                  </descriptorRefs>
+              </configuration>
+          </plugin>
+
       </plugins>
   </build>
 </project>
