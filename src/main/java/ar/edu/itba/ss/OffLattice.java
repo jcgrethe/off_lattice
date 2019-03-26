@@ -15,6 +15,7 @@ public class OffLattice {
         for (double noise=0; noise<=5; noise+=0.25){
             double prom=0;
             System.out.println("Noise: "+noise);
+            List<Double> lVa = new LinkedList<>();
             for (int x=0;x<10;x++) {
 
                 CommandLine cmd = getOptions(args);
@@ -53,9 +54,16 @@ public class OffLattice {
                 double va = sumV / (input.getVelocityMod() * input.getParticlesQuantity());
                 //System.out.println("Va: " + va);
                 prom+=va;
+                lVa.add(va);
             }
 
-            System.out.println("prom; "+prom/10);
+            double auxerror = 0.0;
+            for(Double va: lVa){
+                auxerror+=Math.pow(Math.abs(va-prom/10),2);
+            }
+            double error= Math.sqrt(auxerror/10);
+            System.out.println("prom: "+ prom/10);
+            System.out.println("error: " + error);
         }
         //Output.generatePositionOutput(results);
 
